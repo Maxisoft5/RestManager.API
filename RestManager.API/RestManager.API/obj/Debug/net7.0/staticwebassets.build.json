@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "e98Nhb+QnHWiAblpSULA64bqrxRJ0PCHGOdSV0gfgSk=",
+  "Source": "RestManager.API",
+  "BasePath": "_content/RestManager.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

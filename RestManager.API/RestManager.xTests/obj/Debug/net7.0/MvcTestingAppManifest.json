@@ -1,0 +1,6 @@
+{
+  "RestManager.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API",
+  "RestManager.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.DataAccess",
+  "RestManager.DIContainerCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Utils",
+  "RestManager.Services, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Services"
+}
