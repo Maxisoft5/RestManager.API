@@ -57,14 +57,14 @@ namespace RestManager.Services.Services
             {
                 return SearchAvaibleTableResult.NotFoundRestorant(restorantId);
             }
-            var fullyFree = restorant.Tables.FirstFullyFree(clientsCount);
+            var fullyFree = restorant.Tables.FullyFree(clientsCount);
             if (fullyFree.Any())
             {
                 var dto = _mapper.Map<IEnumerable<TableDTO>>(fullyFree);
                 return SearchAvaibleTableResult.SuccessfullyFound(restorantId, dto);
             }
 
-            var notFullyButHaveSpace = restorant.Tables.FirstNotFullyFreeButHaveSpace(clientsCount);
+            var notFullyButHaveSpace = restorant.Tables.NotFullyFreeButHaveSpace(clientsCount);
 
             if (notFullyButHaveSpace.Any())
             {

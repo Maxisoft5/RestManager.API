@@ -4146,11 +4146,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
+      "projectUniqueName": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
       "projectName": "RestManager.API",
-      "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
+      "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
       "packagesPath": "C:\\Users\\Maksym\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\obj\\",
+      "outputPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4172,11 +4172,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Services\\RestManager.Services.csproj": {
-              "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Services\\RestManager.Services.csproj"
+            "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.Services\\RestManager.Services.csproj": {
+              "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.Services\\RestManager.Services.csproj"
             },
-            "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Utils\\RestManager.DIContainerCore.csproj": {
-              "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.Utils\\RestManager.DIContainerCore.csproj"
+            "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.Utils\\RestManager.DIContainerCore.csproj": {
+              "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.Utils\\RestManager.DIContainerCore.csproj"
             }
           }
         }

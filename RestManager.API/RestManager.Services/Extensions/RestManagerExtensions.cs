@@ -5,7 +5,7 @@ namespace RestManager.Services.Extensions
 {
     public static class RestManagerExtensions
     {
-        public static IEnumerable<Table> FirstNotFullyFreeButHaveSpace(this IEnumerable<Table> tables,
+        public static IEnumerable<Table> NotFullyFreeButHaveSpace(this IEnumerable<Table> tables,
                 int clientsCount)
         {
             var available = tables.Where(x => x.TotalPlaces >= clientsCount &&
@@ -17,10 +17,10 @@ namespace RestManager.Services.Extensions
                 .Where(x =>
                 (x.TableRequests.Sum(x => x.PlacesToTakeCount) + clientsCount) == x.TotalPlaces);
 
-            return tableToMatchTotalPlaces.Any() ? tableToMatchTotalPlaces : available;
+            return tableToMatchTotalPlaces;
         }
 
-        public static IEnumerable<Table> FirstFullyFree(this IEnumerable<Table> tables,
+        public static IEnumerable<Table> FullyFree(this IEnumerable<Table> tables,
               int clientsCount)
         {
             return tables.Where(x => x.TotalPlaces >= clientsCount &&

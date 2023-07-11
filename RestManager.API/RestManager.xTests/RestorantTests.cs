@@ -121,18 +121,18 @@ namespace RestManager.xTests
                 {
                     City = restorant.City,
                     Email = "test@mail.com",
-                    FirstName = "testName4",
+                    FirstName = "testName5",
                     IsGroupRegistrator = true,
-                    LastName = "testLastName4",
+                    LastName = "testLastName5",
                     PhoneNumber = "12345678904",
                 },
                 new()
                 {
                     City = restorant.City,
                     Email = "test@mail.com",
-                    FirstName = "testName44",
+                    FirstName = "testName55",
                     IsGroupRegistrator = false,
-                    LastName = "testLastName44",
+                    LastName = "testLastName55",
                     PhoneNumber = "12345678904",
                 }
             };
@@ -147,24 +147,59 @@ namespace RestManager.xTests
                 {
                     City = restorant.City,
                     Email = "test@mail.com",
-                    FirstName = "testName4",
+                    FirstName = "testName6",
                     IsGroupRegistrator = true,
-                    LastName = "testLastName4",
+                    LastName = "testLastName6",
                     PhoneNumber = "12345678904",
                 },
                 new()
                 {
                     City = restorant.City,
                     Email = "test@mail.com",
-                    FirstName = "testName44",
+                    FirstName = "testName6",
                     IsGroupRegistrator = false,
-                    LastName = "testLastName44",
+                    LastName = "testLastName6",
                     PhoneNumber = "12345678904",
                 }
             };
             var clientGroup6 = new ClientGroupDTO()
             {
                 Clients = clients6
+            };
+
+            var clients7 = new List<ClientDTO>()
+            {
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName7",
+                    IsGroupRegistrator = true,
+                    LastName = "testLastName7",
+                    PhoneNumber = "12345678904",
+                },
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName7",
+                    IsGroupRegistrator = false,
+                    LastName = "testLastName7",
+                    PhoneNumber = "12345678904",
+                },
+                 new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName7",
+                    IsGroupRegistrator = false,
+                    LastName = "testLastName7",
+                    PhoneNumber = "12345678904",
+                }
+            };
+            var clientGroup7 = new ClientGroupDTO()
+            {
+                Clients = clients7
             };
 
 
@@ -205,6 +240,9 @@ namespace RestManager.xTests
                 freeTables.Tables.FirstOrDefault(x => x.TotalPlaces >= clientGroup6.Clients.Count()).ShouldNotBeNull();
                 var res6 = await restManager.SetClientsToTable(clientGroup6, restorant.Id, freeTables.Tables.First().Id);
                 res5.IsError.ShouldBeFalse();
+
+                freeTables = await restManager.GetAvaibleTablesInRestorant(restorant.Id, clientGroup7.Clients.Count());
+                freeTables.Tables.FirstOrDefault(x => x.TotalPlaces >= clientGroup7.Clients.Count()).ShouldBeNull();
 
 
             }

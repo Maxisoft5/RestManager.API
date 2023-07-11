@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "n3qrUojQPNmWw6sAdubzJkytCKFR+9p3N1m2MANN2MdloP7iZZZjAzqCrSlWVq1I9rgDtAz13T7aQXItRSG1ag==",
+  "dgSpecHash": "6cn1SovaykZ77o/ZDM2+RaDY4BiTDUDNNg5kFNlI49cg2B8mNBslkcIlYgjQI03aKq+cu9vj3uVIjfxHqPvo7g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
+  "projectFilePath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\RestManager.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Maksym\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Maksym\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

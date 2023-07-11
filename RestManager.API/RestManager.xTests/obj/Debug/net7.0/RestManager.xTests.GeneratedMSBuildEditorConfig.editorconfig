@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = RestManager.xTests
-build_property.ProjectDir = C:\Users\Maksym\source\repos\RestManager.API\RestManager.xTests\
+build_property.ProjectDir = C:\Users\Maksym\Documents\GitHub\RestManager.API\RestManager.API\RestManager.xTests\

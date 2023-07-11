@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3Tpo3R/S1gocogJ71F385xi2uYHVMe2fVeet7uiZ7eZuI2sYNvIALf5EQHn89K1aY+x0uxTqaOIatucMRO1alw==",
+  "dgSpecHash": "MrWba58tpH48E3DO+wHGHG/DGc+81ITyCl6GdjwHAiVp5yWmFA2qxskr2BhuoYNy25rWMxdCLIerIFm+QFRdHw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj",
+  "projectFilePath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Maksym\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Maksym\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

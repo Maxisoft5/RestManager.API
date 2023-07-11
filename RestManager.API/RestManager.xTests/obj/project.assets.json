@@ -10414,11 +10414,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.xTests\\RestManager.xTests.csproj",
+      "projectUniqueName": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.xTests\\RestManager.xTests.csproj",
       "projectName": "RestManager.xTests",
-      "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.xTests\\RestManager.xTests.csproj",
+      "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.xTests\\RestManager.xTests.csproj",
       "packagesPath": "C:\\Users\\Maksym\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.xTests\\obj\\",
+      "outputPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.xTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -10440,11 +10440,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\RestManager.API.csproj": {
-              "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.API\\RestManager.API.csproj"
+            "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\RestManager.API.csproj": {
+              "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.API\\RestManager.API.csproj"
             },
-            "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj": {
-              "projectPath": "C:\\Users\\Maksym\\source\\repos\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj"
+            "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj": {
+              "projectPath": "C:\\Users\\Maksym\\Documents\\GitHub\\RestManager.API\\RestManager.API\\RestManager.DataAccess\\RestManager.DataAccess.csproj"
             }
           }
         }
