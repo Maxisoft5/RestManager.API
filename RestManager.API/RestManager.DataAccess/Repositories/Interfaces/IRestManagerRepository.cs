@@ -1,4 +1,5 @@
 ﻿using RestManager.DataAccess.Models;
+using RestManager.DataAccess.Models.Enums;
 
 namespace RestManager.DataAccess.Repositories.Interfaces
 {
@@ -14,5 +15,6 @@ namespace RestManager.DataAccess.Repositories.Interfaces
         public Task<Restorant> AddRestorant(Restorant restorant); 
         public Task<QueueForTable> MarkQueueAsProccessed(long queueId);
         public Task<TableRequest> EndClientsVisiting(long groupId);
+        public Task<RequestTableStatus> GetClientGroupLastTableStatus(long groupId);
     }
 }

@@ -12,7 +12,7 @@ namespace RestManager.Services.Extensions
             services.AddAutoMapper(typeof(RestorantProfile));
             services.AddAutoMapper(typeof(TableProfile));
             services.AddAutoMapper(typeof(TableRequestProfile));
-
+            services.AddAutoMapper(typeof(QueueForTableProfile));
         }
     }
 }

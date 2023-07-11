@@ -33,6 +33,7 @@ namespace RestManager.Services.Services
             }
             clientGroup.RestorantId = restorantId;
             var group = await AddClientGroup(clientGroup, restorantId);
+            clientGroup.Id = group.Id;
             var requestDTO = new TableRequestDTO()
             {
                 ClientGroupId = group.Id,
@@ -128,6 +129,10 @@ namespace RestManager.Services.Services
             {
                 foreach (var queue in queues)
                 {
+                    if (queue.ClientGroup == null)
+                    {
+                        queue.ClientGroup = await _managerRepository.GetGroup(queue.Id);
+                    }
                     var searchResult = await GetAvaibleTablesInRestorant(queue.ClientGroup.RestorantId, queue.ClientGroup.Clients.Count());
 
                     if (searchResult.Tables.Any())
@@ -169,6 +174,11 @@ namespace RestManager.Services.Services
             var saved = await _managerRepository.AddRestorant(rest);
             var result = _mapper.Map<RestorantDTO>(saved);
             return result;
+        }
+
+        public async Task<RequestTableStatus> GetClientGroupLastTableStatus(long groupId)
+        {
+            return await _managerRepository.GetClientGroupLastTableStatus(groupId);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestManager.DataAccess.EFCore;
 using RestManager.DataAccess.Models;
+using RestManager.DataAccess.Models.Enums;
 using RestManager.DataAccess.Repositories.Interfaces;
 
 namespace RestManager.DataAccess.Repositories
@@ -61,9 +62,18 @@ namespace RestManager.DataAccess.Repositories
             return request;
         }
 
+        public async Task<RequestTableStatus> GetClientGroupLastTableStatus(long groupId)
+        {
+            var request = await _dataContext.TableRequests.OrderByDescending(x => x.RequestDateTime)
+                .FirstOrDefaultAsync(x => x.ClientGroupId == groupId);
+
+            return request.RequestTableStatus;
+        }
+
         public async Task<ClientGroup> GetGroup(long groupId)
         {
-            return await _dataContext.ClientGroups.FirstOrDefaultAsync(x => x.Id == groupId);
+            return await _dataContext.ClientGroups.Include(x => x.Clients)
+                .FirstOrDefaultAsync(x => x.Id == groupId);
         }
 
         public async Task<Restorant> GetRestorant(long restorantId)

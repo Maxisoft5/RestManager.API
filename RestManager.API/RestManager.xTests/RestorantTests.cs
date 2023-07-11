@@ -244,6 +244,20 @@ namespace RestManager.xTests
                 freeTables = await restManager.GetAvaibleTablesInRestorant(restorant.Id, clientGroup7.Clients.Count());
                 freeTables.Tables.FirstOrDefault(x => x.TotalPlaces >= clientGroup7.Clients.Count()).ShouldBeNull();
 
+                var queueRes = await restManager.QueueForNextAvaibleTable(clientGroup7, restorant.Id);
+                queueRes.IsError.ShouldBeFalse();
+
+                var endVisit = await restManager.EndClientsVisiting(res4.ClientGroup.Id);
+                endVisit.IsError.ShouldBeFalse();
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                
+                var lastGroupStatus = await restManager.GetClientGroupLastTableStatus(queueRes.ClientGroupId);
+
+                lastGroupStatus.ShouldBe(DataAccess.Models.Enums.RequestTableStatus.GroupIsAtTable);
+
+
+
 
             }
 
