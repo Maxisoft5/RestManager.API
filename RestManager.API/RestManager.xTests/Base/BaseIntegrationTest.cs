@@ -17,7 +17,7 @@ namespace RestManager.xTests.Base
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
+                    var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
                     if (descriptor != null)
                         services.Remove(descriptor);
                     var uuId = Guid.NewGuid().ToString();

@@ -1,6 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
+using RestManager.DataAccess.Models;
 using RestManager.Services.Interfaces;
 using RestManager.Services.ModelDTO;
+using RestManager.Services.Records;
+using RestManager.Services.Services;
 using RestManager.xTests.Base;
 using Shouldly;
 
@@ -235,7 +239,6 @@ namespace RestManager.xTests
                 var res5 = await restManager.SetClientsToTable(clientGroup5, restorant.Id, freeTables.Tables.First().Id);
                 res5.IsError.ShouldBeFalse();
 
-
                 freeTables = await restManager.GetAvaibleTablesInRestorant(restorant.Id, clientGroup6.Clients.Count());
                 freeTables.Tables.FirstOrDefault(x => x.TotalPlaces >= clientGroup6.Clients.Count()).ShouldNotBeNull();
                 var res6 = await restManager.SetClientsToTable(clientGroup6, restorant.Id, freeTables.Tables.First().Id);
@@ -250,17 +253,156 @@ namespace RestManager.xTests
                 var endVisit = await restManager.EndClientsVisiting(res4.ClientGroup.Id);
                 endVisit.IsError.ShouldBeFalse();
 
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                await Task.Delay(TimeSpan.FromSeconds(1));
                 
                 var lastGroupStatus = await restManager.GetClientGroupLastTableStatus(queueRes.ClientGroupId);
 
                 lastGroupStatus.ShouldBe(DataAccess.Models.Enums.RequestTableStatus.GroupIsAtTable);
 
 
+            }
+
+            DeleteDatabase(webFactory);
+
+        }
+
+        [Fact]
+        public async Task AddClientsInParallel()
+        {
+            // Arrange
+            var webFactory = GetTestApplication();
+            var tables = new List<TableDTO>()
+            {
+                new()
+                {
+                    Number = 2,
+                    TotalPlaces = 2
+                }
+            };
+            var restorant = new RestorantDTO()
+            {
+                Address = "testAddress1",
+                City = "testCity1",
+                Country = "testCountry1",
+                Name = "Name1",
+                Tables = tables
+            };
+            var clients1 = new List<ClientDTO>()
+            {
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName",
+                    IsGroupRegistrator = true,
+                    LastName = "testLastName",
+                    PhoneNumber = "12345678901",
+                },
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName",
+                    IsGroupRegistrator = true,
+                    LastName = "testLastName",
+                    PhoneNumber = "12345678901",
+                }
+            };
+            var clientGroup1 = new ClientGroupDTO()
+            {
+                Clients = clients1
+            };
+            var clients2 = new List<ClientDTO>()
+            {
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName2",
+                    IsGroupRegistrator = true,
+                    LastName = "testLastName2",
+                    PhoneNumber = "12345678901",
+                },
+                new()
+                {
+                    City = restorant.City,
+                    Email = "test@mail.com",
+                    FirstName = "testName2",
+                    IsGroupRegistrator = true,
+                    LastName = "testLastName2",
+                    PhoneNumber = "12345678901",
+                }
+            };
+            var clientGroup2 = new ClientGroupDTO()
+            {
+                Clients = clients2
+            };
+
+
+            // Act
+            using (var scope = webFactory.Services.CreateAsyncScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var restManager = scopedServices.GetRequiredService<IRestManager>();
+                restorant = await restManager.AddRestorant(restorant);
+                clientGroup1.RestorantId = restorant.Id;
+                clientGroup2.RestorantId = restorant.Id;
+
+
+                var freeTables = await restManager.GetAvaibleTablesInRestorant(restorant.Id, clientGroup1.Clients.Count());
+                freeTables.Tables.Count().ShouldBeGreaterThan(0);
+
+                var added1 = await restManager.AddClientGroup(clientGroup1, restorant.Id);
+                var added2 = await restManager.AddClientGroup(clientGroup2, restorant.Id);
+
+                clientGroup1.Id = added1.Id;
+                clientGroup2.Id = added2.Id;
+
+               
+                Parallel.Invoke(
+                    () =>
+                    {
+                        using (var scope = webFactory.Services.CreateAsyncScope())
+                        {
+                            var scopedServices = scope.ServiceProvider;
+                            var restManager = scopedServices.GetRequiredService<IRestManager>();
+                            var r1 = restManager.SetClientsToTable(clientGroup1, restorant.Id,
+                                freeTables.Tables.First().Id).GetAwaiter().GetResult();
+                        }
+                    },
+                    () =>
+                    {
+                        using (var scope = webFactory.Services.CreateAsyncScope())
+                        {
+                            var scopedServices = scope.ServiceProvider;
+                            var restManager = scopedServices.GetRequiredService<IRestManager>();
+                            var r2 = restManager.SetClientsToTable(clientGroup2, restorant.Id,
+                                freeTables.Tables.First().Id).GetAwaiter().GetResult();
+                        }
+                    }
+                );
+             
+
+                var lastGroupStatus1 = await restManager.GetClientGroupLastTableStatus(added1.Id);
+                var lastGroupStatus2 = await restManager.GetClientGroupLastTableStatus(added2.Id);
+
+                if (lastGroupStatus1 == DataAccess.Models.Enums.RequestTableStatus.GroupIsAtTable)
+                {
+                    lastGroupStatus2.ShouldBe(DataAccess.Models.Enums.RequestTableStatus.GroupInQueue);
+                }
+
+                if (lastGroupStatus2 == DataAccess.Models.Enums.RequestTableStatus.GroupIsAtTable)
+                {
+                    lastGroupStatus1.ShouldBe(DataAccess.Models.Enums.RequestTableStatus.GroupInQueue);
+                }
+
+
 
 
             }
 
+             DeleteDatabase(webFactory);
         }
+
     }
 }

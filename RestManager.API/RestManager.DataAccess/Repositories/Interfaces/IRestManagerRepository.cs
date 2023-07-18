@@ -16,5 +16,6 @@ namespace RestManager.DataAccess.Repositories.Interfaces
         public Task<QueueForTable> MarkQueueAsProccessed(long queueId);
         public Task<TableRequest> EndClientsVisiting(long groupId);
         public Task<RequestTableStatus> GetClientGroupLastTableStatus(long groupId);
+        public Task<bool> CheckIfGroupAlreadyExists(long groupId);
     }
 }

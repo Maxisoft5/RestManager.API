@@ -16,6 +16,8 @@ namespace RestManager.Services.Services
         private readonly CheckForFreeTableQueue _checkForFreeTableQueue;
         private readonly IRestManagerRepository _managerRepository;
         private readonly IMapper _mapper;
+        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+
         public RestManager(IRestManagerRepository managerRepository, CheckForFreeTableQueue checkForFreeTableQueue, IMapper mapper)
         {
             _checkForFreeTableQueue = checkForFreeTableQueue;
@@ -26,28 +28,59 @@ namespace RestManager.Services.Services
         public async Task<SetClientsResult> SetClientsToTable(ClientGroupDTO clientGroup,
             long restorantId, long tableId)
         {
+            semaphoreSlim.Wait();
             var restorant = await _managerRepository.GetRestorant(restorantId);
             if (restorant == null)
             {
+                semaphoreSlim.Release();
                 return SetClientsResult.NotFoundRestorant(restorantId, clientGroup, tableId);
             }
             clientGroup.RestorantId = restorantId;
-            var group = await AddClientGroup(clientGroup, restorantId);
-            clientGroup.Id = group.Id;
+            var isGroupExists = await _managerRepository.CheckIfGroupAlreadyExists(clientGroup.Id);
+            if (!isGroupExists)
+            {
+                var group = await AddClientGroup(clientGroup, restorantId);
+                clientGroup.Id = group.Id;
+            }
             var requestDTO = new TableRequestDTO()
             {
-                ClientGroupId = group.Id,
                 WhenGroupSetAtTableDateTime = DateTime.UtcNow,
                 PlacesToTakeCount = clientGroup.Clients.Count(),
                 RequestDateTime = DateTime.UtcNow,
                 RequestTableStatus = RequestTableStatus.GroupIsAtTable,
-                TableId = tableId
+                TableId = tableId,
+                ClientGroupId = clientGroup.Id
             };
 
-            var request = _mapper.Map<TableRequest>(requestDTO);
-            var savedRequest = await _managerRepository.AddTableRequest(request);
-            return SetClientsResult.SuccessfullyAdded(restorantId, clientGroup, tableId);
+            if (await EnsureAvaibleTablesExists(restorantId, clientGroup.Clients.Count()))
+            {
+                var request = _mapper.Map<TableRequest>(requestDTO);
+                var savedRequest = await _managerRepository.AddTableRequest(request);
+                semaphoreSlim.Release();
+                return SetClientsResult.SuccessfullyAdded(restorantId, clientGroup, tableId);
+            }
+            else
+            {
+                requestDTO.RequestTableStatus = RequestTableStatus.GroupInQueue;
+                var request = _mapper.Map<TableRequest>(requestDTO);
+                var savedRequest = await _managerRepository.AddTableRequest(request);
+                var result = await QueueForNextAvaibleTable(clientGroup, restorantId);
+                if (result.IsError)
+                {
+                    semaphoreSlim.Release();
+                    return SetClientsResult.UnExcpectedErrorWhenTryToSetToQueue(restorantId, clientGroup, tableId, result.Message);
+                }
+                semaphoreSlim.Release();
+                return SetClientsResult.GroupWasSentToQueue(restorantId, clientGroup, tableId);
+            }
+            
 
+        }
+
+        private async Task<bool> EnsureAvaibleTablesExists(long restorantId, int clientsCount)
+        {
+            var tables = await GetAvaibleTablesInRestorant(restorantId, clientsCount);
+            return tables.Tables.Count() > 0;
         }
 
         public async Task<SearchAvaibleTableResult> GetAvaibleTablesInRestorant(long restorantId,

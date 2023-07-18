@@ -22,7 +22,11 @@ namespace RestManager.Services.Records
 
         public static SetClientsResult NotFoundRestorant(long restorantId, ClientGroupDTO clientGroup, long tableId) =>
             new(restorantId, $"Restorant with RestorantId {restorantId} was not found", true, clientGroup, tableId);
+        public static SetClientsResult GroupWasSentToQueue(long restorantId, ClientGroupDTO clientGroup, long tableId) =>
+            new(restorantId, $"Restorant with RestorantId {restorantId} haven't free table places, group with id {clientGroup.Id} was sent to queue", true, clientGroup, tableId);
+        public static SetClientsResult UnExcpectedErrorWhenTryToSetToQueue(long restorantId, ClientGroupDTO clientGroup, long tableId, string error) =>
+           new(restorantId, $"Restorant with RestorantId {restorantId} haven't free table places, group with id {clientGroup.Id} was sent to queue but error was happend ${error}", true, clientGroup, tableId);
         public static SetClientsResult SuccessfullyAdded(long restorantId, ClientGroupDTO clientGroup, long tableId) =>
-         new(restorantId, $"Added {clientGroup.Clients.Count()} Clients to table id {tableId}", false, clientGroup, tableId);
+            new(restorantId, $"Added {clientGroup.Clients.Count()} Clients to table id {tableId}", false, clientGroup, tableId);
     }
 }

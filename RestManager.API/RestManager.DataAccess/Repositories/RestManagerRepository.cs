@@ -49,13 +49,19 @@ namespace RestManager.DataAccess.Repositories
             return tableRequest;
         }
 
+        public async Task<bool> CheckIfGroupAlreadyExists(long groupId)
+        {
+            var result = await _dataContext.ClientGroups.AnyAsync(x => x.Id == groupId);
+            return result;
+        }
+
         public async Task<TableRequest> EndClientsVisiting(long groupId)
         {
             var request = await _dataContext.TableRequests
                 .Include(x => x.ClientGroup).FirstOrDefaultAsync(x => x.ClientGroupId == groupId
-                    && x.RequestTableStatus == Models.Enums.RequestTableStatus.GroupIsAtTable);
+                    && x.RequestTableStatus == RequestTableStatus.GroupIsAtTable);
 
-            request.RequestTableStatus = Models.Enums.RequestTableStatus.GroupHasLeftFromTable;
+            request.RequestTableStatus = RequestTableStatus.GroupHasLeftFromTable;
             _dataContext.TableRequests.Update(request);
             await _dataContext.SaveChangesAsync();
 
@@ -64,7 +70,8 @@ namespace RestManager.DataAccess.Repositories
 
         public async Task<RequestTableStatus> GetClientGroupLastTableStatus(long groupId)
         {
-            var request = await _dataContext.TableRequests.OrderByDescending(x => x.RequestDateTime)
+            var request = await _dataContext.TableRequests
+                .OrderByDescending(x => x.RequestDateTime)
                 .FirstOrDefaultAsync(x => x.ClientGroupId == groupId);
 
             return request.RequestTableStatus;
@@ -72,14 +79,17 @@ namespace RestManager.DataAccess.Repositories
 
         public async Task<ClientGroup> GetGroup(long groupId)
         {
-            return await _dataContext.ClientGroups.Include(x => x.Clients)
+            var group = await _dataContext.ClientGroups.Include(x => x.Clients)
                 .FirstOrDefaultAsync(x => x.Id == groupId);
+
+            return group;
         }
 
         public async Task<Restorant> GetRestorant(long restorantId)
         {
             var restorant = await _dataContext.Restorants
-                    .Include(x => x.Tables).ThenInclude(x => x.TableRequests)
+                    .Include(x => x.Tables)
+                    .ThenInclude(x => x.TableRequests)
                     .FirstOrDefaultAsync(x => x.Id == restorantId);
 
             return restorant;
@@ -87,9 +97,11 @@ namespace RestManager.DataAccess.Repositories
 
         public async Task<IEnumerable<QueueForTable>> GetToProccessQueues()
         {
-            return await _dataContext.QueuesForTable.Include(x => x.ClientGroup).ThenInclude(x => x.Restorant)
+            var queries = await _dataContext.QueuesForTable.Include(x => x.ClientGroup).ThenInclude(x => x.Restorant)
                 .Where(x => x.QueueForTableStatus == Models.Enums.QueueForTableStatus.ToProcessed)
                 .ToListAsync();
+
+            return queries;
         }
 
         public async Task<QueueForTable> MarkQueueAsProccessed(long queueId)
@@ -97,7 +109,7 @@ namespace RestManager.DataAccess.Repositories
             var queue = _dataContext.Set<QueueForTable>()
                .Local.FirstOrDefault(entry => entry.Id.Equals(queueId));
 
-            queue.QueueForTableStatus = Models.Enums.QueueForTableStatus.Processed;
+            queue.QueueForTableStatus = QueueForTableStatus.Processed;
             if (queue != null)
             {
                 _dataContext.Entry(queue).State = EntityState.Modified;
